@@ -1,127 +1,315 @@
-import java.awt.event.ActionEvent;
+import java.awt.EventQueue;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JTextField;
+import java.awt.Font;
+import javax.swing.JButton;
 import java.awt.event.ActionListener;
-import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.Color;
+import javax.swing.JTextArea;
 
-public class arrMenuWB extends JFrame implements ActionListener {
-    static final int TAM = 10;
-    static int pos = 0;
-    static int a[] = new int[TAM];
-    JButton btnAgregar, btnConsultar, btnMostrar, btnInvertir, btnEliminar, btnSalir;
-    public static void main(String[] args) {
-       arrMenuWB ventana = new arrMenuWB();
-        ventana.setBounds(200, 200, 320, 320);
-        ventana.setVisible(true);
-    }
-    arrMenuWB() {
-        setLayout(null);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setTitle("Menú de Arreglos");
+public class arrMenuWB {
 
-        btnAgregar = new JButton("1. Agregar número");
-        btnAgregar.setBounds(60, 20, 180, 30);
-        add(btnAgregar);
+	private JFrame frame;
+	private JTextField text_n;
+	private final int TAM = 10;
+	private int POS = 0;
+	private int a [] = new int [TAM];
+	private JTextArea Area;
+	private JLabel lbl_N, lbl_aviso;
+	private JButton btnAdicionar, btnEliminar, btnConsultar, btnOrdenar, btnAleatorio, btnLimpiar, btnMemoria, btnSalir; 
 
-        btnConsultar = new JButton("2. Consultar elementos");
-        btnConsultar.setBounds(60, 60, 180, 30);
-        add(btnConsultar);
 
-        btnMostrar = new JButton("3. Mostrar arreglo");
-        btnMostrar.setBounds(60, 100, 180, 30);
-        add(btnMostrar);
+	public static void main(String[] args) {
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					arrMenuWB window = new arrMenuWB();
+					window.frame.setVisible(true);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+	}
 
-        btnInvertir = new JButton("4. Invertir arreglo");
-        btnInvertir.setBounds(60, 140, 180, 30);
-        add(btnInvertir);
+	//Create the application.
+	public arrMenuWB() {
+		for (int i = 0; i < TAM; i++) //Inicia en 0 el arreglo
+			a [i]=0;
+		initialize();
+	}
 
-        btnEliminar = new JButton("5. Eliminar número");
-        btnEliminar.setBounds(60, 180, 180, 30);
-        add(btnEliminar);
+	//Initialize the contents of the frame.
+	private void initialize() {
+		frame = new JFrame();
+		frame.getContentPane().setFont(new Font("Times New Roman", Font.PLAIN, 14));
+		frame.setBounds(100, 100, 616, 409);
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.getContentPane().setLayout(null);
 
-        btnSalir = new JButton("0. Salir");
-        btnSalir.setBounds(60, 220, 180, 30);
-        add(btnSalir);
+		lbl_N = new JLabel("N=");
+		lbl_N.setFont(new Font("Times New Roman", Font.BOLD, 15));
+		lbl_N.setBounds(132, 21, 34, 37);
+		frame.getContentPane().add(lbl_N);
 
-        initListeners();
-    }
-    private void initListeners() {
-        btnAgregar.addActionListener(this);
-        btnConsultar.addActionListener(this);
-        btnMostrar.addActionListener(this);
-        btnInvertir.addActionListener(this);
-        btnEliminar.addActionListener(this);
-        btnSalir.addActionListener(this);
-    }
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        if (e.getSource() == btnAgregar) {
-            adicionar();
-        } else if (e.getSource() == btnConsultar) {
-            consultar();
-        } else if (e.getSource() == btnMostrar) {
-            mostrar();
-        } else if (e.getSource() == btnInvertir) {
-            invertir();
-        } else if (e.getSource() == btnEliminar) {
-            eliminar();
-        } else if (e.getSource() == btnSalir) {
-            JOptionPane.showMessageDialog(this, "Saliendo...");
-            System.exit(0);
-        }
-    }
-        public static void adicionar(){
-        if (pos == TAM) {
-            JOptionPane.showMessageDialog(null, "El arreglo está lleno...");
-        } else {
-            int num = Integer.parseInt(JOptionPane.showInputDialog(null, "Ingrese un número:"));
-            a[pos] = num;
-            pos++;
-        }
+		text_n = new JTextField();
+		text_n.setForeground(new Color(0, 0, 0));
+		text_n.setBackground(new Color(171, 193, 254));
+		text_n.setBounds(160, 28, 112, 26);
+		frame.getContentPane().add(text_n);
+		text_n.setColumns(10);
 
-    }
-    public static void consultar(){
-        JOptionPane.showMessageDialog(null, "El número de elementos en el arreglo es: " + pos);
-    }
-    public static void mostrar(){
-        String resultado = "Elementos en el arreglo:\n";
-        for (int i = 0; i < pos; i++) {
-            resultado += "Elemento " + (i + 1) + ": " + a[i] + "\n";
-        }
-        JOptionPane.showMessageDialog(null, resultado);
-    }
-    public static void invertir(){
-        for (int i = 0; i < pos / 2; i++) {
-            int temp = a[i];
-            a[i] = a[pos - 1 - i];
-            a[pos - 1 - i] = temp;
-        }
-    }
-    public static void eliminar(){
-        if (pos == 0) {
-            JOptionPane.showMessageDialog(null, "El arreglo está vacío, no se pueden eliminar elementos.");
-        } else {
-            int num = Integer.parseInt(JOptionPane.showInputDialog(null, "Ingrese el número a eliminar del arreglo:"));
-            boolean encontrado = false;
-            for (int i = 0; i < pos; i++) {
-                if (a[i] == num) {
-                    encontrado = true;
-                    for (int j = i; j < pos - 1; j++) {
-                        a[j] = a[j + 1];
-                    }
-                    pos--;
-                    break;
-                }
-            }
-            if (!encontrado) {
-                JOptionPane.showMessageDialog(null, "El número no se encuentra en el arreglo.");
-            }
-        }
-    }
+		btnAdicionar = new JButton("Adicionar");
+		btnAdicionar.setBackground(new Color(255, 255, 255));
+		btnAdicionar.setFont(new Font("Times New Roman", Font.BOLD, 14));
+		btnAdicionar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Adicionar();
+			}
+		});
+		btnAdicionar.setBounds(20, 60, 105, 25);
+		frame.getContentPane().add(btnAdicionar);
 
-    public static int[] getA() {
-        return a;
-    }
+		btnEliminar = new JButton("Eliminar");
+		btnEliminar.setBackground(new Color(255, 255, 255));
+		btnEliminar.setFont(new Font("Times New Roman", Font.BOLD, 14));
+		btnEliminar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Eliminar();
+			}
+		});
+		btnEliminar.setBounds(20, 100, 105, 25);
+		frame.getContentPane().add(btnEliminar);
 
-    public static void setA(int[] a) {
-        arrMenuWB.a = a;
-    }
+		btnConsultar = new JButton("Consultar");
+		btnConsultar.setBackground(new Color(255, 255, 255));
+		btnConsultar.setFont(new Font("Times New Roman", Font.BOLD, 14));
+		btnConsultar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Consultar();
+			}
+		});
+		btnConsultar.setBounds(20, 140, 105, 25);
+		frame.getContentPane().add(btnConsultar);
+
+		btnOrdenar = new JButton("Ordenar");
+		btnOrdenar.setBackground(new Color(255, 255, 255));
+		btnOrdenar.setFont(new Font("Times New Roman", Font.BOLD, 14));
+		btnOrdenar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Ordenar();
+			}
+		});
+		btnOrdenar.setBounds(20, 180, 105, 25);
+		frame.getContentPane().add(btnOrdenar);
+
+		btnAleatorio = new JButton("Aleatorio");
+		btnAleatorio.setBackground(new Color(255, 255, 255));
+		btnAleatorio.setFont(new Font("Times New Roman", Font.BOLD, 14));
+		btnAleatorio.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Aleatorio();
+			}
+		});
+		btnAleatorio.setBounds(20, 220, 105, 25);
+		frame.getContentPane().add(btnAleatorio);
+
+		btnLimpiar = new JButton("Limpiar");
+		btnLimpiar.setBackground(new Color(255, 255, 255));
+		btnLimpiar.setFont(new Font("Times New Roman", Font.BOLD, 14));
+		btnLimpiar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Limpiar();
+			}
+		});
+		btnLimpiar.setBounds(20, 260, 105, 25);
+		frame.getContentPane().add(btnLimpiar);
+
+		btnSalir = new JButton("Salir");
+		btnSalir.setBackground(new Color(255, 0, 0));
+		btnSalir.setFont(new Font("Times New Roman", Font.BOLD, 14));
+		btnSalir.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Salir();
+			}
+		});
+		btnSalir.setBounds(487, 337, 105, 25);
+		frame.getContentPane().add(btnSalir);
+
+		Area = new JTextArea();
+		Area.setFont(new Font("Comic Sans MS", Font.BOLD, 14));
+		Area.setBounds(279, 59, 200, 265);
+		frame.getContentPane().add(Area);
+
+		lbl_aviso = new JLabel("");
+		lbl_aviso.setFont(new Font("Times New Roman", Font.BOLD, 14));
+		lbl_aviso.setBounds(317, 34, 200, 26);
+		frame.getContentPane().add(lbl_aviso);
+
+		btnMemoria = new JButton("Memoria");
+		btnMemoria.setFont(new Font("Times New Roman", Font.BOLD, 14));
+		btnMemoria.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Memoria();
+			}
+		});
+		btnMemoria.setBounds(20, 300, 105, 25);
+		frame.getContentPane().add(btnMemoria);
+	}
+
+	private void listar(){
+		String cad = "";
+		for (int i=0; i< POS; i++) {
+			cad = cad + "a[" + i + "] =" + a[i] + "\n";
+		}	
+		Area.setText(cad);
+	}
+
+	private void Adicionar(){
+		if (POS < TAM) {
+			a[POS++] = Integer.parseInt( text_n.getText());
+			text_n.setText("");
+			listar();
+		} else {
+			lbl_aviso.setText("Arreglo lleno");
+			JOptionPane.showMessageDialog(null, "El arreglo esta lleno");
+		}
+	}
+
+	private void Eliminar() {
+		int n = 0;
+		X x = new X (text_n.getText());
+		if (x.evalua()==false) {
+			JOptionPane.showMessageDialog(null, "Digite un numero :)"  );
+		} else {
+			n = x.retorna();
+			if (POS == 0 ) {
+				JOptionPane.showMessageDialog(null, "No hay elementos a eliminar ");
+			} else {
+				boolean encontrado = false;
+				int i = 0;
+				for (i = 0; i < POS; i++) {
+					if (a[i] == n) {
+						encontrado = true;
+						break;
+					}
+				}
+				if (encontrado) {
+					for ( int j = i; j < POS-1; j++ ) {
+						a[j] = a[j+1];
+					}
+					a[j]=0;
+					listar();
+					JOptionPane.showMessageDialog(null, "Se elimino elemento "+ i);
+				} else {
+					JOptionPane.showMessageDialog(null, "El número" + n + "no se encuentra en el arreglo" );
+				}
+			}}
+	}
+	private void Consultar(){
+		int n = 0;
+		X x = new X (text_n.getText());
+		if (x.evalua()==false) {
+			JOptionPane.showMessageDialog(null, "Digite un numero :)"  );
+		} else {
+			n = x.retorna();
+			if (POS == 0 ) {
+				JOptionPane.showMessageDialog(null, "No hay elementos a consultar ");
+			} else {
+				boolean encontrado = false;
+				int i = 0;
+				for (i = 0; i < POS; i++) {
+					if (a[i] == n) {
+						encontrado = true;
+						break;
+					}
+				}
+				if (encontrado) {
+					JOptionPane.showMessageDialog(null, "El número se encuentra en la posicion "+ i);
+				} else {
+					JOptionPane.showMessageDialog(null, "El número" + n + "no se encuentra en el arreglo" );
+				}
+			}}
+	}
+	private void Ordenar() {
+		if (POS==0) {
+			JOptionPane.showMessageDialog(null, "El arreglo está vacío");
+		} else {
+			int i,j, aux;
+			for (i = 0; i < POS -1; i++) {
+				for (j=i+1; j<POS; j++) {
+					if(a[i] > a[j]) {
+						aux= a [i];
+						a[i] = a[j];
+						a[j] = aux;
+					}
+				}
+			}
+			listar();
+			JOptionPane.showMessageDialog(null, "El arreglo está ordenado");
+		}
+	}
+
+	private void Aleatorio() {
+		int n=0;
+		X x = new X (text_n.getText());
+		if (x.evalua()==false) {
+			JOptionPane.showMessageDialog(null, "Digite un numero :)"  );
+		} else {
+			n = x.retorna();
+			if (n > TAM) {
+				JOptionPane.showMessageDialog(null, "Exceso capacidad" );
+			} else {
+				for(int i = 0; i < n; i++) {
+					a[i]= (int) ( Math.random() * 20 + 1 );
+				}
+				POS = n;
+				listar();
+			}
+			text_n.setText("");
+		}
+	}
+	private void Limpiar() {
+		POS = 0;
+		for(int i=0; i < TAM; i++)
+			a[i]=0;
+		listar();
+	}
+
+	private void Memoria() {
+		String cad = "";
+		for (int i=0; i< TAM; i++) {
+			if (i== POS) 
+				cad = (cad + "-----memoria-----" + "\n");
+			cad = cad + "a[" + i + "] =" + a[i] + "\n";
+		}	
+		Area.setText(cad);
+	}
+	private void Salir() {
+		JOptionPane.showMessageDialog(null, "Saliendo...");
+		System.exit(0);
+	}
+
+	class X{
+		boolean resultado = false;
+		int n = 0;
+		X(String cad){
+			try {
+				n = Integer.parseInt (cad);
+				resultado = true;
+			} catch (Exception e) {
+			}
+		}
+		int retorna() {
+			return n;
+		}
+		boolean evalua() {
+			return resultado;
+		}
+	}
+
 }
+
