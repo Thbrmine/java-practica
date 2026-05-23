@@ -16,23 +16,21 @@ public class arrMenuWB {
 	private JTextField text_n;
 	private final int TAM = 10;
 	private int POS = 0;
-	private int a [] = new int [TAM];
+	private final int a [] = new int [TAM];
 	private JTextArea Area;
 	private JLabel lbl_N, lbl_aviso;
 	private JButton btnAdicionar, btnEliminar, btnConsultar, btnOrdenar, btnAleatorio, btnLimpiar, btnMemoria, btnSalir; 
 
 
 	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					arrMenuWB window = new arrMenuWB();
-					window.frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
+		EventQueue.invokeLater(() -> {
+                    try {
+                        arrMenuWB window = new arrMenuWB();
+                        window.frame.setVisible(true);
+                    } catch (Exception e) {
+                        System.err.println("Error initializing application: " + e.getMessage());
+                    }
+                });
 	}
 
 	//Create the application.
@@ -43,6 +41,7 @@ public class arrMenuWB {
 	}
 
 	//Initialize the contents of the frame.
+        @SuppressWarnings("Convert2Lambda")
 	private void initialize() {
 		frame = new JFrame();
 		frame.getContentPane().setFont(new Font("Times New Roman", Font.PLAIN, 14));
@@ -66,6 +65,7 @@ public class arrMenuWB {
 		btnAdicionar.setBackground(new Color(255, 255, 255));
 		btnAdicionar.setFont(new Font("Times New Roman", Font.BOLD, 14));
 		btnAdicionar.addActionListener(new ActionListener() {
+            @Override
 			public void actionPerformed(ActionEvent e) {
 				Adicionar();
 			}
@@ -77,6 +77,7 @@ public class arrMenuWB {
 		btnEliminar.setBackground(new Color(255, 255, 255));
 		btnEliminar.setFont(new Font("Times New Roman", Font.BOLD, 14));
 		btnEliminar.addActionListener(new ActionListener() {
+            @Override
 			public void actionPerformed(ActionEvent e) {
 				Eliminar();
 			}
@@ -88,6 +89,7 @@ public class arrMenuWB {
 		btnConsultar.setBackground(new Color(255, 255, 255));
 		btnConsultar.setFont(new Font("Times New Roman", Font.BOLD, 14));
 		btnConsultar.addActionListener(new ActionListener() {
+            @Override
 			public void actionPerformed(ActionEvent e) {
 				Consultar();
 			}
@@ -99,6 +101,7 @@ public class arrMenuWB {
 		btnOrdenar.setBackground(new Color(255, 255, 255));
 		btnOrdenar.setFont(new Font("Times New Roman", Font.BOLD, 14));
 		btnOrdenar.addActionListener(new ActionListener() {
+            @Override
 			public void actionPerformed(ActionEvent e) {
 				Ordenar();
 			}
@@ -110,6 +113,7 @@ public class arrMenuWB {
 		btnAleatorio.setBackground(new Color(255, 255, 255));
 		btnAleatorio.setFont(new Font("Times New Roman", Font.BOLD, 14));
 		btnAleatorio.addActionListener(new ActionListener() {
+            @Override
 			public void actionPerformed(ActionEvent e) {
 				Aleatorio();
 			}
@@ -121,6 +125,7 @@ public class arrMenuWB {
 		btnLimpiar.setBackground(new Color(255, 255, 255));
 		btnLimpiar.setFont(new Font("Times New Roman", Font.BOLD, 14));
 		btnLimpiar.addActionListener(new ActionListener() {
+            @Override
 			public void actionPerformed(ActionEvent e) {
 				Limpiar();
 			}
@@ -132,6 +137,7 @@ public class arrMenuWB {
 		btnSalir.setBackground(new Color(255, 0, 0));
 		btnSalir.setFont(new Font("Times New Roman", Font.BOLD, 14));
 		btnSalir.addActionListener(new ActionListener() {
+            @Override
 			public void actionPerformed(ActionEvent e) {
 				Salir();
 			}
@@ -152,6 +158,7 @@ public class arrMenuWB {
 		btnMemoria = new JButton("Memoria");
 		btnMemoria.setFont(new Font("Times New Roman", Font.BOLD, 14));
 		btnMemoria.addActionListener(new ActionListener() {
+            @Override
 			public void actionPerformed(ActionEvent e) {
 				Memoria();
 			}
@@ -180,7 +187,7 @@ public class arrMenuWB {
 	}
 
 	private void Eliminar() {
-		int n = 0;
+		int n;
 		X x = new X (text_n.getText());
 		if (x.evalua()==false) {
 			JOptionPane.showMessageDialog(null, "Digite un numero :)"  );
@@ -190,7 +197,7 @@ public class arrMenuWB {
 				JOptionPane.showMessageDialog(null, "No hay elementos a eliminar ");
 			} else {
 				boolean encontrado = false;
-				int i = 0;
+				int i, j;
 				for (i = 0; i < POS; i++) {
 					if (a[i] == n) {
 						encontrado = true;
@@ -198,19 +205,20 @@ public class arrMenuWB {
 					}
 				}
 				if (encontrado) {
-					for ( int j = i; j < POS-1; j++ ) {
+					for ( j = i; j < POS-1; j++ ) {
 						a[j] = a[j+1];
 					}
 					a[j]=0;
+					POS--;
 					listar();
 					JOptionPane.showMessageDialog(null, "Se elimino elemento "+ i);
 				} else {
-					JOptionPane.showMessageDialog(null, "El número" + n + "no se encuentra en el arreglo" );
+					JOptionPane.showMessageDialog(null, "El número " + n + " no se encuentra en el arreglo" );
 				}
 			}}
 	}
 	private void Consultar(){
-		int n = 0;
+		int n;
 		X x = new X (text_n.getText());
 		if (x.evalua()==false) {
 			JOptionPane.showMessageDialog(null, "Digite un numero :)"  );
@@ -220,7 +228,7 @@ public class arrMenuWB {
 				JOptionPane.showMessageDialog(null, "No hay elementos a consultar ");
 			} else {
 				boolean encontrado = false;
-				int i = 0;
+				int i;
 				for (i = 0; i < POS; i++) {
 					if (a[i] == n) {
 						encontrado = true;
@@ -230,7 +238,7 @@ public class arrMenuWB {
 				if (encontrado) {
 					JOptionPane.showMessageDialog(null, "El número se encuentra en la posicion "+ i);
 				} else {
-					JOptionPane.showMessageDialog(null, "El número" + n + "no se encuentra en el arreglo" );
+					JOptionPane.showMessageDialog(null, "El número " + n + " no se encuentra en el arreglo" );
 				}
 			}}
 	}
@@ -254,7 +262,7 @@ public class arrMenuWB {
 	}
 
 	private void Aleatorio() {
-		int n=0;
+		int n;
 		X x = new X (text_n.getText());
 		if (x.evalua()==false) {
 			JOptionPane.showMessageDialog(null, "Digite un numero :)"  );
@@ -300,7 +308,7 @@ public class arrMenuWB {
 			try {
 				n = Integer.parseInt (cad);
 				resultado = true;
-			} catch (Exception e) {
+			} catch (NumberFormatException e) {
 			}
 		}
 		int retorna() {
@@ -312,4 +320,6 @@ public class arrMenuWB {
 	}
 
 }
+
+
 
